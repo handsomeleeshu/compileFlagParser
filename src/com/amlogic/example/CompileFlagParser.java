@@ -12,11 +12,13 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
-    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
-    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
-    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
+    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
+    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
+    public static String rootDirMacro = "OPUS_SRC_ROOT";
     public static String toolChain = "arm-linux-androideabi-g";
-    public static String target = "libfdk-aac.la";
+    public static String target = "libopus.la";
+    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
+    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
 
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
@@ -348,6 +350,8 @@ public class CompileFlagParser {
 
                         if (str.startsWith("-M") && str.length() <= 3) {
                             continue;
+                        } else if (str.startsWith("-MF") || str.startsWith("-MT")) {
+                            continue;
                         }
 
                         if (str.startsWith("-g") && str.length() <= 3) {
@@ -488,6 +492,8 @@ public class CompileFlagParser {
                         if (str.equals("-MF") || str.equals("-MT")) {
                             k++;
                             continue;
+                        } else if (str.startsWith("-MF") || str.startsWith("-MT")) {
+                            continue;
                         }
 
                         if (str.startsWith("-M") && str.length() <= 3) {
@@ -581,7 +587,7 @@ public class CompileFlagParser {
         System.out.println(otherCppFlags);
         System.out.println("");
 
-        CProjectFileGenerator cProjctFile = new CProjectFileGenerator("/Users/lishuai/work/temp/test/.cproject");
+        CProjectFileGenerator cProjctFile = new CProjectFileGenerator(CompileFlagParser.cProjectFile);
         cProjctFile.setTarget(target);
         cProjctFile.setCIncludeFlags(includeCFlags);
         cProjctFile.setCDefineFlags(defineCFlags);
@@ -599,7 +605,7 @@ public class CompileFlagParser {
         cProjctFile.setLinkerTool(linkerTool);
         cProjctFile.generate();
 
-        ProjectFileGenerator projectFile = new ProjectFileGenerator("/Users/lishuai/work/temp/test/.project");
+        ProjectFileGenerator projectFile = new ProjectFileGenerator(CompileFlagParser.projectFile);
         projectFile.setRootDir(rootDir);
         projectFile.setRootDirMacro(rootDirMacro);
         projectFile.setTarget(target);
@@ -688,7 +694,9 @@ public class CompileFlagParser {
 
         public ProjectFileGenerator(String fileName) {
             try {
-                writer = new FileWriter(fileName);
+                File file = new File(fileName);
+                file.createNewFile();
+                writer = new FileWriter(file);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -835,7 +843,9 @@ public class CompileFlagParser {
 
         public CProjectFileGenerator(String fileName) {
             try {
-                writer = new FileWriter(fileName);
+                File file = new File(fileName);
+                file.createNewFile();
+                writer = new FileWriter(file);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
