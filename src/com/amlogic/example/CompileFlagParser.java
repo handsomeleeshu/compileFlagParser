@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
+    /* opus config */
     public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
     public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
     public static String rootDirMacro = "OPUS_SRC_ROOT";
@@ -19,6 +20,15 @@ public class CompileFlagParser {
     public static String target = "libopus.la";
     public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
     public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
+
+//    /* fdkaac config */
+//    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
+//    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
+//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
+//    public static String toolChain = "arm-linux-androideabi-g";
+//    public static String target = "libfdk-aac.la";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
 
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
