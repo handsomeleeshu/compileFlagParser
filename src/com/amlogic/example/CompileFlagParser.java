@@ -938,12 +938,9 @@ public class CompileFlagParser {
             String buildExt = "";
             if (targetName.endsWith(staticLibSuffix)) {
                 buildType = "staticLib";
-                buildExt = "a";
             } else if (targetName.endsWith(sharedLibSuffix)) {
                 buildType = "sharedLib";
-                buildExt = "so";
             } else {
-                buildType = "exe";
             }
             try {
                 writer.write(
@@ -1200,8 +1197,11 @@ public class CompileFlagParser {
                                 "									<additionalInput kind=\"additionalinputdependency\" paths=\"$(USER_OBJS)\"/>\n" +
                                 "									<additionalInput kind=\"additionalinput\" paths=\"$(LIBS)\"/>\n" +
                                 "								</inputType>\n" +
+                                "								<outputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.output.343839160\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.output\"/>\n" +
                                 "							</tool>\n" +
-                                "							<tool id=\"cdt.managedbuild.tool.gnu.cross.archiver.654163789\" name=\"Cross GCC Archiver\" superClass=\"cdt.managedbuild.tool.gnu.cross.archiver\"/>\n" +
+                                "							<tool id=\"cdt.managedbuild.tool.gnu.cross.archiver.654163789\" name=\"Cross GCC Archiver\" superClass=\"cdt.managedbuild.tool.gnu.cross.archiver\">\n" +
+                                "								<outputType id=\"cdt.managedbuild.tool.gnu.archiver.output.1890400257\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.archiver.output\"/>\n" +
+                                "							</tool>\n" +
                                 "							<tool command=\"" + asCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GASErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.assembler.1127778392\" name=\"Cross GCC Assembler\" superClass=\"cdt.managedbuild.tool.gnu.cross.assembler\">\n" +
                                 "								<option id=\"gnu.both.asm.option.include.paths.2101698361\" name=\"Include paths (-I)\" superClass=\"gnu.both.asm.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\"/>\n" +
                                 "								<option id=\"gnu.both.asm.option.flags.1652156105\" name=\"Assembler flags\" superClass=\"gnu.both.asm.option.flags\" useByScannerDiscovery=\"false\" value=\"\" valueType=\"string\"/>\n" +
