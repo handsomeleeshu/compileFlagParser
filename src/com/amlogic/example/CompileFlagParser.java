@@ -12,14 +12,23 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
-    /* opus config */
+    /* test opus decode config */
     public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
     public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
     public static String rootDirMacro = "OPUS_SRC_ROOT";
     public static String toolChain = "arm-linux-androideabi-g";
-    public static String target = "libopus.la";
-    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
-    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
+    public static String target = "test_opus_decode";
+    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.cproject";
+    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.project";
+
+//    /* lib opus config */
+//    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
+//    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
+//    public static String rootDirMacro = "OPUS_SRC_ROOT";
+//    public static String toolChain = "arm-linux-androideabi-g";
+//    public static String target = "libopus.la";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
 
 //    /* fdkaac config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
@@ -32,7 +41,7 @@ public class CompileFlagParser {
 
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
-    public static String objSuffix = ".lo";
+    public static String objSuffix = ".o";
     public static String staticLibSuffix = ".la";
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
@@ -239,12 +248,12 @@ public class CompileFlagParser {
                 otherLinkedFlags.addLast(str);
             }
 
-            if (objList.isEmpty()) {
-                reader.close();
-                System.out.println("otherLinkedFlags");
-                System.out.println(otherLinkedFlags);
-                return;
-            }
+//            if (objList.isEmpty()) {
+//                reader.close();
+//                System.out.println("otherLinkedFlags");
+//                System.out.println(otherLinkedFlags);
+//                return;
+//            }
 
             for (i = 0; i < objList.size(); i++) {
                 int k;
