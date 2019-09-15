@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
-    /* test opus decode config */
-    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
-    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
-    public static String rootDirMacro = "OPUS_SRC_ROOT";
-    public static String toolChain = "arm-linux-androideabi-g";
-    public static String target = "test_opus_decode";
-    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.cproject";
-    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.project";
+//    /* test opus decode config */
+//    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
+//    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
+//    public static String rootDirMacro = "OPUS_SRC_ROOT";
+//    public static String toolChain = "arm-linux-androideabi-g";
+//    public static String target = "test_opus_decode";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.project";
 
 //    /* lib opus config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
@@ -30,18 +30,18 @@ public class CompileFlagParser {
 //    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
 //    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
 
-//    /* fdkaac config */
-//    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
-//    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
-//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
-//    public static String toolChain = "arm-linux-androideabi-g";
-//    public static String target = "libfdk-aac.la";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
+    /* fdkaac config */
+    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
+    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
+    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
+    public static String toolChain = "arm-linux-androideabi-g";
+    public static String target = "libfdk-aac.la";
+    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
+    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
 
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
-    public static String objSuffix = ".o";
+    public static String objSuffix = ".lo";
     public static String staticLibSuffix = ".la";
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
@@ -89,8 +89,8 @@ public class CompileFlagParser {
             } else {
                 boolean linkedFlagFound = false;
                 for (int i = 0; i < stringList.size(); i++) {
-                    linkedFlags = stringList.get(i).split(" ");
-                    linkedFlags = removeEmptyLines(linkedFlags);
+                    linkedFlags = splitCmd(stringList.get(i));
+
                     for (int j = 0; j < linkedFlags.length; j++) {
                         if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].endsWith(target)) {
                             linkedFlagFound = true;
@@ -262,8 +262,7 @@ public class CompileFlagParser {
                 stringList = grep(stringList, " -o ");
 
                 if (objList.get(i).endsWith(cSourceFileSuffix)) {
-                    compileCFlags = stringList.get(0).split(" ");
-                    compileCFlags = removeEmptyLines(compileCFlags);
+                    compileCFlags = splitCmd(stringList.get(0));
 
                     if (!grep(compileCFlags, "pwd=").isEmpty()) {
                         pwdDir = grep(compileCFlags, "pwd=").get(0).replaceFirst("pwd=", "");
@@ -409,8 +408,7 @@ public class CompileFlagParser {
                 }
 
                 if (objList.get(i).endsWith(cppSourceFileSuffix)) {
-                    compileCppFlags = stringList.get(0).split(" ");
-                    compileCppFlags = removeEmptyLines(compileCppFlags);
+                    compileCppFlags = splitCmd(stringList.get(0));
 
                     if (!grep(compileCppFlags, "pwd=").isEmpty()) {
                         pwdDir = grep(compileCppFlags, "pwd=").get(0).replaceFirst("pwd=", "");
@@ -632,7 +630,58 @@ public class CompileFlagParser {
         projectFile.generate();
     }
 
-    private static String ajustDir(String srcDir, String pwdDir, String rootDir, String rootDirMacro) {
+    static String[] concat(String[] a, String[] b) {
+          String[] c = new String[a.length + b.length];
+          System.arraycopy(a, 0, c, 0, a.length);
+          System.arraycopy(b, 0, c, a.length, b.length);
+          return c;
+    }
+
+    private static int typeOfQuote(String str) {
+        int i = 0;
+        String quote = "\\";
+        String tail = quote;
+
+        while (str.endsWith(tail)) {
+            i++;
+            tail += quote;
+        }
+        return i & 1;
+    }
+
+    private static String[] splitCmd(String cmd) {
+        int i = 0;
+        String[] subString = cmd.split("\"");
+
+        for (i = 1; i < subString.length; ) {
+            if (((i & 0x1) == 1) && (typeOfQuote(subString[i - 1]) == typeOfQuote(subString[i]))) {
+                subString[i] = "\"" + subString[i] + "\"";
+                i += 2;
+                continue;
+            }
+            subString[i] += "\"" + subString[i] + "\"";
+            subString[i + 1] = "";
+            subString = removeEmptyLines(subString);
+        }
+
+        String[] ret = {""};
+        for (i = 0; i < subString.length; i += 2) {
+            ret = concat(ret, subString[i].split(" "));
+            if (i + 1 < subString.length) {
+                ret[ret.length - 1] += subString[i + 1];
+            }
+        }
+
+        return removeEmptyLines(ret);
+    }
+
+    private static String ajustDir(String srcDir, String pwdDir, String rootDir, String rootDirMacro) throws Exception {
+        if (srcDir.startsWith("\"")) {
+            if (!srcDir.endsWith("\"")) {
+                throw new Exception("src directory has invalid format!");
+            }
+            srcDir = srcDir.substring(1, srcDir.length() - 1);
+        }
         if (srcDir.startsWith("./")) {
             srcDir = srcDir.substring(2, srcDir.length());
         }
