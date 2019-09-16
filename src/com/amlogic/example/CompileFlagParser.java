@@ -12,6 +12,37 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
+	/* am_av_test config */
+    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+    public static String toolChain = "bin/clang";
+    public static String target = "libam_adp_adec.so";
+    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec/.project";
+    public static String cSourceFileSuffix = ".c";
+    public static String cppSourceFileSuffix = ".cpp";
+    public static String objSuffix = ".o";
+    public static String staticLibSuffix = ".a";
+    public static String sharedLibSuffix = ".so";
+    public static String excutableSuffix = "";
+
+//	/* am_av_test config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "am_av_test";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+//
+
 //    /* test opus decode config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
 //    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
@@ -20,6 +51,12 @@ public class CompileFlagParser {
 //    public static String target = "test_opus_decode";
 //    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.cproject";
 //    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".la";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
 
 //    /* lib opus config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
@@ -29,22 +66,27 @@ public class CompileFlagParser {
 //    public static String target = "libopus.la";
 //    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
 //    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".lo";
+//    public static String staticLibSuffix = ".la";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
 
-    /* fdkaac config */
-    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
-    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
-    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
-    public static String toolChain = "arm-linux-androideabi-g";
-    public static String target = "libfdk-aac.la";
-    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
-    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
-
-    public static String cSourceFileSuffix = ".c";
-    public static String cppSourceFileSuffix = ".cpp";
-    public static String objSuffix = ".lo";
-    public static String staticLibSuffix = ".la";
-    public static String sharedLibSuffix = ".so";
-    public static String excutableSuffix = "";
+//    /* fdkaac config */
+//    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
+//    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
+//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
+//    public static String toolChain = "arm-linux-androideabi-g";
+//    public static String target = "libfdk-aac.la";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".lo";
+//    public static String staticLibSuffix = ".la";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
 
     public static void main(String[] args) {
         String str = null, pwdDir = null;
@@ -147,6 +189,7 @@ public class CompileFlagParser {
                     if (!list.isEmpty()) {
                         String[] sourceFileFullName = list.getFirst().split(" ");
                         objList.addLast(grep(sourceFileFullName, grepString).getLast());
+                        objList.addLast(str);
                         continue;
                     }
                     /* find match c source file */
@@ -156,6 +199,7 @@ public class CompileFlagParser {
                     if (!list.isEmpty()) {
                         String[] sourceFileFullName = list.getFirst().split(" ");
                         objList.addLast(grep(sourceFileFullName, grepString).getLast());
+                        objList.addLast(str);
                         continue;
                     }
 
@@ -255,9 +299,10 @@ public class CompileFlagParser {
 //                return;
 //            }
 
-            for (i = 0; i < objList.size(); i++) {
+            for (i = 0; i < objList.size(); i += 2) {
                 int k;
                 stringList = grep(buildLog, objList.get(i));
+                stringList = grep(stringList, objList.get(i + 1));
                 stringList = grep(stringList, toolChain);
                 stringList = grep(stringList, " -o ");
 
@@ -831,7 +876,7 @@ public class CompileFlagParser {
 
         private void generateSourcesLink(LinkedList<String> srcFiles, String rootDirMacro) {
             MutuallyLinkedList<String> folders = new MutuallyLinkedList<String>();
-            for (int i = 0; i < srcFiles.size(); i++) {
+            for (int i = 0; i < srcFiles.size(); i += 2) {
                 String[] subFolder = srcFiles.get(i).split("/");
                 subFolder = removeEmptyLines(subFolder);
                 String folder = subFolder[0];
