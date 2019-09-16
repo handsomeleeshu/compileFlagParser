@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
-//	/* am_av_test config */
+//	/* libam_adp_adec.so config */
 //    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
 //    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
 //    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
 //    public static String toolChain = "bin/clang";
-//    public static String target = "libam_adp_adec.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.project";
+//    public static String target = "libamadec_system.so";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.project";
 //    public static String cSourceFileSuffix = ".c";
 //    public static String cppSourceFileSuffix = ".cpp";
 //    public static String objSuffix = ".o";
@@ -245,9 +245,11 @@ public class CompileFlagParser {
                 }
 
                 if (str.equals("-Wl,-soname")) {
+                    otherLinkedFlags.addLast(str + " " + linkedFlags[i + 1]);
                     i++;
                     continue;
                 } else if (str.startsWith("-Wl,-soname")) {
+                    otherLinkedFlags.addLast(str);
                     continue;
                 }
 
