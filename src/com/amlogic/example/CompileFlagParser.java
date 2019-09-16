@@ -12,14 +12,29 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
+//	/* am_av_test config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "libam_adp_adec.so";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+
 	/* am_av_test config */
     public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
     public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
     public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
     public static String toolChain = "bin/clang";
-    public static String target = "libam_adp_adec.so";
-    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec/.project";
+    public static String target = "am_av_test";
+    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
@@ -27,21 +42,6 @@ public class CompileFlagParser {
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
 
-//	/* am_av_test config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "am_av_test";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-//
 
 //    /* test opus decode config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
@@ -899,7 +899,7 @@ public class CompileFlagParser {
                                     "		</link>\n" +
                                     "");
                 }
-                for (int i = 0; i < srcFiles.size(); i++) {
+                for (int i = 0; i < srcFiles.size(); i += 2) {
                     writer.write(
                             "		<link>\n" +
                                     "			<name>" + srcFiles.get(i) + "</name>\n" +
@@ -970,6 +970,9 @@ public class CompileFlagParser {
         }
 
         public void setCCompileTool(String toolPath) {
+            if (toolPath.isEmpty()) {
+                return;
+            }
             String[] folders = toolPath.split("/");
             cCompileCmd = folders[folders.length - 1];
             cmdPath = toolPath.substring(0, toolPath.length() - cCompileCmd.length());
@@ -979,6 +982,9 @@ public class CompileFlagParser {
         }
 
         public void setCppCompileTool(String toolPath) {
+            if (toolPath.isEmpty()) {
+                return;
+            }
             String[] folders = toolPath.split("/");
             cppCompileCmd = folders[folders.length - 1];
             cmdPath = toolPath.substring(0, toolPath.length() - cppCompileCmd.length());
@@ -988,6 +994,9 @@ public class CompileFlagParser {
         }
 
         public void setLinkerTool(String toolPath) {
+            if (toolPath.isEmpty()) {
+                return;
+            }
             String[] folders = toolPath.split("/");
             linkCmd = folders[folders.length - 1];
             cmdPath = toolPath.substring(0, toolPath.length() - linkCmd.length());
