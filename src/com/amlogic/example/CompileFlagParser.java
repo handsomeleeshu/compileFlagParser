@@ -12,29 +12,15 @@ import java.util.regex.Pattern;
 public class CompileFlagParser {
 
     /* global configs */
-//	/* libam_adp_adec.so config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "libamadec_system.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
 
-	/* am_av_test config */
-    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+    /* libam_adp_adec.so config */
+    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
     public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
     public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
     public static String toolChain = "bin/clang";
-    public static String target = "am_av_test";
-    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
+    public static String target = "libamadec_system.so";
+    public static String cProjectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
@@ -42,6 +28,35 @@ public class CompileFlagParser {
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
 
+//  /* libam_adp_adec.so config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "libfaad_sys.so";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+
+//  /* am_av_test config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "am_av_test";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
 
 //    /* test opus decode config */
 //    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
@@ -134,7 +149,7 @@ public class CompileFlagParser {
                     linkedFlags = splitCmd(stringList.get(i));
 
                     for (int j = 0; j < linkedFlags.length; j++) {
-                        if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].endsWith(target)) {
+                        if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].replace("\"", "").replace("'", "").endsWith(target)) {
                             linkedFlagFound = true;
                             break;
                         }
@@ -175,45 +190,47 @@ public class CompileFlagParser {
                     continue;
                 }
 
-                if (str.endsWith(objSuffix)) {
+                if (str.replace("\"", "").replace("'", "").endsWith(objSuffix)) {
+                    str = str.replace("\"", "").replace("'", "");
+                    if (str.startsWith("./")) {
+                        str = str.substring(2, str.length());
+                    }
                     LinkedList<String> list;
                     stringList = grep(buildLog, str);
                     stringList = grep(stringList, " -o ");
                     stringList = grep(stringList, " -c ");
 
-                    String[] sourceFileName = str.split("/");
+                    String[] sourceFileName = str.replace("\"", "").replace("'", "").split("/");
                     /* find match cpp source file */
-                    String grepString = sourceFileName[sourceFileName.length - 1].substring(0,
-                            sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cppSourceFileSuffix;
+                    String grepString = sourceFileName[sourceFileName.length - 1].substring(0, sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cppSourceFileSuffix;
                     list = grep(stringList, grepString);
                     if (!list.isEmpty()) {
                         String[] sourceFileFullName = list.getFirst().split(" ");
-                        objList.addLast(grep(sourceFileFullName, grepString).getLast());
-                        objList.addLast(str);
+                        objList.addLast(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", ""));
+                        objList.addLast(str.replace("\"", "").replace("'", ""));
                         continue;
                     }
                     /* find match c source file */
-                    grepString = sourceFileName[sourceFileName.length - 1].substring(0,
-                            sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cSourceFileSuffix;
+                    grepString = sourceFileName[sourceFileName.length - 1].substring(0, sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cSourceFileSuffix;
                     list = grep(stringList, grepString);
                     if (!list.isEmpty()) {
                         String[] sourceFileFullName = list.getFirst().split(" ");
-                        objList.addLast(grep(sourceFileFullName, grepString).getLast());
-                        objList.addLast(str);
+                        objList.addLast(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", ""));
+                        objList.addLast(str.replace("\"", "").replace("'", ""));
                         continue;
                     }
 
                     /* no match source file, add the obj file to other flags */
-                    otherLinkedFlags.addLast(ajustDir(str, pwdDir, rootDir, rootDirectoryMacro));
+                    otherLinkedFlags.addLast(ajustDir(str.replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                     continue;
                 }
 
                 if (str.equals("-L")) {
-                    otherLinkedFlags.addLast(str + " " + ajustDir(linkedFlags[i + 1], pwdDir, rootDir, rootDirectoryMacro));
+                    otherLinkedFlags.addLast(str + " " + ajustDir(linkedFlags[i + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                     i++;
                     continue;
                 } else if (str.startsWith("-L")) {
-                    otherLinkedFlags.addLast("-L " + ajustDir(str.substring(2, str.length() - 1), pwdDir, rootDir, rootDirectoryMacro));
+                    otherLinkedFlags.addLast("-L " + ajustDir(str.substring(2, str.length() - 1).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                     continue;
                 }
 
@@ -308,7 +325,7 @@ public class CompileFlagParser {
                 stringList = grep(stringList, toolChain);
                 stringList = grep(stringList, " -o ");
 
-                if (objList.get(i).endsWith(cSourceFileSuffix)) {
+                if (objList.get(i).replace("\"", "").replace("'", "").endsWith(cSourceFileSuffix)) {
                     compileCFlags = splitCmd(stringList.get(0));
 
                     if (!grep(compileCFlags, "pwd=").isEmpty()) {
@@ -330,20 +347,20 @@ public class CompileFlagParser {
                         str = compileCFlags[k];
 
                         if (str.equals("-I")) {
-                            includeCFlags.addLast(ajustDir(compileCFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            includeCFlags.addLast(ajustDir(compileCFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-I")) {
-                            includeCFlags.addLast(ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            includeCFlags.addLast(ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
                         if (str.equals("-include")) {
-                            includeHFileCFlags.addLast(ajustDir(compileCFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            includeHFileCFlags.addLast(ajustDir(compileCFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-include")) {
-                            includeHFileCFlags.addLast(ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            includeHFileCFlags.addLast(ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
@@ -384,20 +401,20 @@ public class CompileFlagParser {
                         }
 
                         if (str.equals("-isystem")) {
-                            otherCFlags.addLast(str + " " + ajustDir(compileCFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            otherCFlags.addLast(str + " " + ajustDir(compileCFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-isystem")) {
-                            otherCFlags.addLast("-isystem " + ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            otherCFlags.addLast("-isystem " + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
                         if (str.equals("-B")) {
-                            otherCFlags.addLast(str + ajustDir(compileCFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            otherCFlags.addLast(str + ajustDir(compileCFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-B")) {
-                            otherCFlags.addLast("-B" + ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            otherCFlags.addLast("-B" + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
@@ -413,13 +430,13 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.startsWith("-M") && str.length() <= 3) {
+                        if (str.startsWith("-M") && str.length() <= 4) {
                             continue;
                         } else if (str.startsWith("-MF") || str.startsWith("-MT")) {
                             continue;
                         }
 
-                        if (str.startsWith("-g") && str.length() <= 3) {
+                        if (str.startsWith("-g") && str.length() <= 5) {
                             continue;
                         }
 
@@ -431,7 +448,7 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.endsWith(".d")) {
+                        if (str.replace("\"", "").replace("'", "").endsWith(".d")) {
                             continue;
                         }
 
@@ -440,7 +457,7 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.equals(objList.get(i))) {
+                        if (str.replace("\"", "").replace("'", "").equals(objList.get(i))) {
                             continue;
                         }
 
@@ -454,7 +471,7 @@ public class CompileFlagParser {
 
                 }
 
-                if (objList.get(i).endsWith(cppSourceFileSuffix)) {
+                if (objList.get(i).replace("\"", "").replace("'", "").endsWith(cppSourceFileSuffix)) {
                     compileCppFlags = splitCmd(stringList.get(0));
 
                     if (!grep(compileCppFlags, "pwd=").isEmpty()) {
@@ -475,20 +492,20 @@ public class CompileFlagParser {
                         str = compileCppFlags[k];
 
                         if (str.equals("-I")) {
-                            includeCppFlags.addLast(ajustDir(compileCppFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            includeCppFlags.addLast(ajustDir(compileCppFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-I")) {
-                            includeCppFlags.addLast(ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            includeCppFlags.addLast(ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
                         if (str.equals("-include")) {
-                            includeHFileCppFlags.addLast(ajustDir(compileCppFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            includeHFileCppFlags.addLast(ajustDir(compileCppFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-include")) {
-                            includeHFileCppFlags.addLast(ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            includeHFileCppFlags.addLast(ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
@@ -529,20 +546,20 @@ public class CompileFlagParser {
                         }
 
                         if (str.equals("-isystem")) {
-                            otherCppFlags.addLast(str + " " + ajustDir(compileCppFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            otherCppFlags.addLast(str + " " + ajustDir(compileCppFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-isystem")) {
-                            otherCppFlags.addLast("-isystem " + " " + ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            otherCppFlags.addLast("-isystem " + " " + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
                         if (str.equals("-B")) {
-                            otherCppFlags.addLast(str + ajustDir(compileCppFlags[k + 1], pwdDir, rootDir, rootDirectoryMacro));
+                            otherCppFlags.addLast(str + ajustDir(compileCppFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             k++;
                             continue;
                         } else if (str.startsWith("-B")) {
-                            otherCppFlags.addLast("-B" + ajustDir(str.substring(2, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                            otherCppFlags.addLast("-B" + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                             continue;
                         }
 
@@ -560,11 +577,11 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.startsWith("-M") && str.length() <= 3) {
+                        if (str.startsWith("-M") && str.length() <= 4) {
                             continue;
                         }
 
-                        if (str.startsWith("-g") && str.length() <= 3) {
+                        if (str.startsWith("-g") && str.length() <= 5) {
                             continue;
                         }
 
@@ -577,7 +594,7 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.endsWith(".d")) {
+                        if (str.replace("\"", "").replace("'", "").endsWith(".d")) {
                             continue;
                         }
 
@@ -586,7 +603,7 @@ public class CompileFlagParser {
                             continue;
                         }
 
-                        if (str.equals(objList.get(i))) {
+                        if (str.replace("\"", "").replace("'", "").equals(objList.get(i))) {
                             continue;
                         }
 
@@ -678,10 +695,10 @@ public class CompileFlagParser {
     }
 
     static String[] concat(String[] a, String[] b) {
-          String[] c = new String[a.length + b.length];
-          System.arraycopy(a, 0, c, 0, a.length);
-          System.arraycopy(b, 0, c, a.length, b.length);
-          return c;
+        String[] c = new String[a.length + b.length];
+        System.arraycopy(a, 0, c, 0, a.length);
+        System.arraycopy(b, 0, c, a.length, b.length);
+        return c;
     }
 
     private static int typeOfQuote(String str) {
@@ -700,7 +717,7 @@ public class CompileFlagParser {
         int i = 0;
         String[] subString = cmd.split("\"");
 
-        for (i = 1; i < subString.length; ) {
+        for (i = 1; i < subString.length;) {
             if (((i & 0x1) == 1) && (typeOfQuote(subString[i - 1]) == typeOfQuote(subString[i]))) {
                 subString[i] = "\"" + subString[i] + "\"";
                 i += 2;
@@ -711,11 +728,16 @@ public class CompileFlagParser {
             subString = removeEmptyLines(subString);
         }
 
-        String[] ret = {""};
+        String[] ret = { "" };
         for (i = 0; i < subString.length; i += 2) {
             ret = concat(ret, subString[i].split(" "));
             if (i + 1 < subString.length) {
-                ret[ret.length - 1] += subString[i + 1];
+                if (subString[i].endsWith(" ")) {
+                    String[] temp = { subString[i + 1] };
+                    ret = concat(ret, temp);
+                } else {
+                    ret[ret.length - 1] += subString[i + 1];
+                }
             }
         }
 
@@ -831,7 +853,18 @@ public class CompileFlagParser {
         }
 
         public void setSrcFiles(LinkedList<String> srcFiles) {
-            this.srcFiles = srcFiles;
+            this.srcFiles = new LinkedList<String>();
+            for (int i = 0; i < srcFiles.size(); i += 2) {
+                if (srcFiles.get(i).startsWith("/")) {
+                    String str = srcFiles.get(i).replaceFirst(rootDir, "");
+                    while (str.startsWith("/")) {
+                        str = str.substring(1, str.length());
+                    }
+                    this.srcFiles.addLast(str);
+                } else {
+                    this.srcFiles.addLast(srcFiles.get(i));
+                }
+            }
         }
 
         public void generate() {
@@ -878,7 +911,7 @@ public class CompileFlagParser {
 
         private void generateSourcesLink(LinkedList<String> srcFiles, String rootDirMacro) {
             MutuallyLinkedList<String> folders = new MutuallyLinkedList<String>();
-            for (int i = 0; i < srcFiles.size(); i += 2) {
+            for (int i = 0; i < srcFiles.size(); i++) {
                 String[] subFolder = srcFiles.get(i).split("/");
                 subFolder = removeEmptyLines(subFolder);
                 String folder = subFolder[0];
@@ -901,7 +934,7 @@ public class CompileFlagParser {
                                     "		</link>\n" +
                                     "");
                 }
-                for (int i = 0; i < srcFiles.size(); i += 2) {
+                for (int i = 0; i < srcFiles.size(); i++) {
                     writer.write(
                             "		<link>\n" +
                                     "			<name>" + srcFiles.get(i) + "</name>\n" +
