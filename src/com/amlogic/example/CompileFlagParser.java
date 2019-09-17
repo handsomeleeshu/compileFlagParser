@@ -111,6 +111,8 @@ public class CompileFlagParser {
         String cCompileTool = "", cppCompileTool = "", linkerTool = "";
         LinkedList<String> buildLog = new LinkedList<String>();
         LinkedList<String> objList = new LinkedList<String>();
+        LinkedList<String> srcList = new LinkedList<String>();
+        LinkedList<String> compileCmdList = new LinkedList<String>();
         String rootDirectoryMacro = "${" + rootDirMacro + "}";
 
         MutuallyLinkedList<String> otherLinkedFlags = new MutuallyLinkedList<String>();
@@ -189,8 +191,8 @@ public class CompileFlagParser {
                     continue;
                 }
 
-                if (str.replace("\"", "").replace("'", "").endsWith(objSuffix)) {
-                    str = str.replace("\"", "").replace("'", "");
+                if (removeHeadTailSpaces(str.replace("\"", "").replace("'", "")).endsWith(objSuffix)) {
+                    str = removeHeadTailSpaces(str.replace("\"", "").replace("'", ""));
                     if (str.startsWith("./")) {
                         str = str.substring(2, str.length());
                     }
@@ -204,9 +206,13 @@ public class CompileFlagParser {
                     String grepString = sourceFileName[sourceFileName.length - 1].substring(0, sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cppSourceFileSuffix;
                     list = grep(stringList, grepString);
                     if (!list.isEmpty()) {
+                        if (list.size() > 1) {
+                            System.out.println("too many build cmds found for objfile " + str);
+                        }
                         String[] sourceFileFullName = list.getFirst().split(" ");
-                        objList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
+                        srcList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
                         objList.addLast(removeHeadTailSpaces(str.replace("\"", "").replace("'", "")));
+                        compileCmdList.addLast(list.getFirst());
                         continue;
                     }
                     /* find match c source file */
@@ -214,8 +220,9 @@ public class CompileFlagParser {
                     list = grep(stringList, grepString);
                     if (!list.isEmpty()) {
                         String[] sourceFileFullName = list.getFirst().split(" ");
-                        objList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
+                        srcList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
                         objList.addLast(removeHeadTailSpaces(str.replace("\"", "").replace("'", "")));
+                        compileCmdList.addLast(list.getFirst());
                         continue;
                     }
 
@@ -310,7 +317,7 @@ public class CompileFlagParser {
                 otherLinkedFlags.addLast(str);
             }
 
-            for (i = 0; i < objList.size(); i += 2) {
+            for (i = 0; i < srcList.size(); i++) {
                 int k;
                 String[] cxxCompileFlags;
                 MutuallyLinkedList<String> cxxDefineFlags;
@@ -319,29 +326,24 @@ public class CompileFlagParser {
                 MutuallyLinkedList<String> cxxIncludeFlags;
                 MutuallyLinkedList<String> cxxIncludeHFileFlags;
 
-                stringList = grep(buildLog, objList.get(i));
-                stringList = grep(stringList, objList.get(i + 1));
-                stringList = grep(stringList, toolChain);
-                stringList = grep(stringList, " -o ");
-
-                if (objList.get(i).replace("\"", "").replace("'", "").endsWith(cSourceFileSuffix)) {
+                if (srcList.get(i).endsWith(cSourceFileSuffix)) {
                     cxxDefineFlags = defineCFlags;
                     cxxUndefFlags = undefineCFlags;
                     cxxOtherFlags = otherCFlags;
                     cxxIncludeFlags = includeCFlags;
                     cxxIncludeHFileFlags = includeHFileCFlags;
-                } else if (objList.get(i).replace("\"", "").replace("'", "").endsWith(cppSourceFileSuffix)) {
+                } else if (srcList.get(i).endsWith(cppSourceFileSuffix)) {
                     cxxDefineFlags = defineCppFlags;
                     cxxUndefFlags = undefineCppFlags;
                     cxxOtherFlags = otherCppFlags;
                     cxxIncludeFlags = includeCppFlags;
                     cxxIncludeHFileFlags = includeHFileCppFlags;
                 } else {
-                    System.out.println("not found " + objList.get(i) + "in build log !!!");
+                    System.out.println("not found " + srcList.get(i) + "in build log !!!");
                     continue;
                 }
 
-                cxxCompileFlags = splitCmd(stringList.get(0));
+                cxxCompileFlags = splitCmd(compileCmdList.get(i));
 
                 if (!grep(cxxCompileFlags, "pwd=").isEmpty()) {
                     pwdDir = grep(cxxCompileFlags, "pwd=").get(0).replaceFirst("pwd=", "");
@@ -476,7 +478,7 @@ public class CompileFlagParser {
                         continue;
                     }
 
-                    if (str.replace("\"", "").replace("'", "").equals(objList.get(i))) {
+                    if (str.equals(srcList.get(i))) {
                         continue;
                     }
 
@@ -492,8 +494,8 @@ public class CompileFlagParser {
             e.printStackTrace();
         }
 
-        System.out.println("objList");
-        System.out.println(objList);
+        System.out.println("srcList");
+        System.out.println(srcList);
         System.out.println("");
 
         System.out.println("otherLinkedFlags");
@@ -562,11 +564,11 @@ public class CompileFlagParser {
         projectFile.setRootDir(rootDir);
         projectFile.setRootDirMacro(rootDirMacro);
         projectFile.setTarget(target);
-        projectFile.setSrcFiles(objList);
+        projectFile.setSrcFiles(srcList);
         projectFile.generate();
     }
 
-    static String[] concat(String[] a, String[] b) {
+    private static String[] concat(String[] a, String[] b) {
         String[] c = new String[a.length + b.length];
         System.arraycopy(a, 0, c, 0, a.length);
         System.arraycopy(b, 0, c, a.length, b.length);
@@ -737,7 +739,7 @@ public class CompileFlagParser {
 
         public void setSrcFiles(LinkedList<String> srcFiles) {
             this.srcFiles = new LinkedList<String>();
-            for (int i = 0; i < srcFiles.size(); i += 2) {
+            for (int i = 0; i < srcFiles.size(); i++) {
                 if (srcFiles.get(i).startsWith("/")) {
                     String str = srcFiles.get(i).replaceFirst(rootDir, "");
                     while (str.startsWith("/")) {
