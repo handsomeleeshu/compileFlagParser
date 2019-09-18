@@ -14,13 +14,13 @@ public class CompileFlagParser {
     /* global configs */
 
     /* libam_adp_adec.so config */
-    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
     public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
     public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
     public static String toolChain = "bin/clang";
-    public static String target = "libamadec_system.so";
-    public static String cProjectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.project";
+    public static String target = "libfaad_sys.so";
+    public static String cProjectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
@@ -110,7 +110,7 @@ public class CompileFlagParser {
 
         String cCompileTool = "", cppCompileTool = "", linkerTool = "";
         LinkedList<String> buildLog = new LinkedList<String>();
-        LinkedList<String> objList = new LinkedList<String>();
+        LinkedList<String> srcPwdList = new LinkedList<String>();
         LinkedList<String> srcList = new LinkedList<String>();
         LinkedList<String> compileCmdList = new LinkedList<String>();
         String rootDirectoryMacro = "${" + rootDirMacro + "}";
@@ -193,35 +193,59 @@ public class CompileFlagParser {
 
                 if (removeHeadTailSpaces(str.replace("\"", "").replace("'", "")).endsWith(objSuffix)) {
                     str = removeHeadTailSpaces(str.replace("\"", "").replace("'", ""));
-                    if (str.startsWith("./")) {
-                        str = str.substring(2, str.length());
-                    }
+                    String[] sourceFileName = str.replace("\"", "").replace("'", "").split("/");
+                    String tailName = sourceFileName[sourceFileName.length - 1];
+                    String srcPwd = null;
+                    String[] cmds = null;
+                    String objFile = null;
+
                     LinkedList<String> list;
-                    stringList = grep(buildLog, str);
+                    stringList = grep(buildLog, tailName);
                     stringList = grep(stringList, " -o ");
                     stringList = grep(stringList, " -c ");
 
-                    String[] sourceFileName = str.replace("\"", "").replace("'", "").split("/");
                     /* find match cpp source file */
-                    String grepString = sourceFileName[sourceFileName.length - 1].substring(0, sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cppSourceFileSuffix;
+                    String grepString = tailName.substring(0, tailName.length() - objSuffix.length()) + cppSourceFileSuffix;
                     list = grep(stringList, grepString);
-                    if (!list.isEmpty()) {
-                        if (list.size() > 1) {
-                            System.out.println("too many build cmds found for objfile " + str);
+                    while (!list.isEmpty()) {
+                        cmds = splitCmd(list.getFirst());
+                        if (!grep(cmds, "pwd=").isEmpty()) {
+                            srcPwd = grep(cmds, "pwd=").get(0).replaceFirst("pwd=", "");
+                        } else {
+                            srcPwd = rootDir;
                         }
-                        String[] sourceFileFullName = list.getFirst().split(" ");
-                        srcList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
-                        objList.addLast(removeHeadTailSpaces(str.replace("\"", "").replace("'", "")));
+                        objFile = removeHeadTailSpaces(grep(cmds, tailName).getLast().replace("\"", "").replace("'", ""));
+                        if (getFileFullPathName(objFile, pwdDir).equals(getFileFullPathName(str, pwdDir))) {
+                            break;
+                        }
+                        list.removeFirst();
+                    }
+                    if (!list.isEmpty()) {
+                        srcList.addLast(removeHeadTailSpaces(grep(cmds, grepString).getLast().replace("\"", "").replace("'", "")));
+                        srcPwdList.addLast(srcPwd);
                         compileCmdList.addLast(list.getFirst());
                         continue;
                     }
+
                     /* find match c source file */
-                    grepString = sourceFileName[sourceFileName.length - 1].substring(0, sourceFileName[sourceFileName.length - 1].length() - objSuffix.length()) + cSourceFileSuffix;
+                    grepString = tailName.substring(0, tailName.length() - objSuffix.length()) + cSourceFileSuffix;
                     list = grep(stringList, grepString);
+                    while (!list.isEmpty()) {
+                        cmds = splitCmd(list.getFirst());
+                        if (!grep(cmds, "pwd=").isEmpty()) {
+                            srcPwd = grep(cmds, "pwd=").get(0).replaceFirst("pwd=", "");
+                        } else {
+                            srcPwd = rootDir;
+                        }
+                        objFile = removeHeadTailSpaces(grep(cmds, tailName).getLast().replace("\"", "").replace("'", ""));
+                        if (getFileFullPathName(objFile, pwdDir).equals(getFileFullPathName(str, pwdDir))) {
+                            break;
+                        }
+                        list.removeFirst();
+                    }
                     if (!list.isEmpty()) {
-                        String[] sourceFileFullName = list.getFirst().split(" ");
-                        srcList.addLast(removeHeadTailSpaces(grep(sourceFileFullName, grepString).getLast().replace("\"", "").replace("'", "")));
-                        objList.addLast(removeHeadTailSpaces(str.replace("\"", "").replace("'", "")));
+                        srcList.addLast(removeHeadTailSpaces(grep(cmds, grepString).getLast().replace("\"", "").replace("'", "")));
+                        srcPwdList.addLast(srcPwd);
                         compileCmdList.addLast(list.getFirst());
                         continue;
                     }
@@ -616,6 +640,19 @@ public class CompileFlagParser {
         }
 
         return removeEmptyLines(ret);
+    }
+    private static String getFileFullPathName(String fileName, String pwdDir) {
+        if (!removeHeadTailSpaces(fileName).startsWith("/")) {
+            fileName = pwdDir + "/" + fileName;
+        }
+        File file = new File(fileName);
+        try {
+            return file.getCanonicalPath();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static String ajustDir(String srcDir, String pwdDir, String rootDir, String rootDirMacro) throws Exception {
