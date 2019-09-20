@@ -13,35 +13,35 @@ public class CompileFlagParser {
 
     /* global configs */
 
-    /* libam_adp_adec.so config */
-    public static String logFile = "/home/lishuai/work/temp/build_test.log";
+//    /* libam_adp_adec.so config */
+//    public static String logFile = "/home/lishuai/work/temp/build_fdkaac.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/fdkaac/fdk-aac-2.0.0";
+//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
+//    public static String toolChain = "arm-linux-androideabi-g";
+//    public static String target = "libam_adp_adec.so";
+//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".lo";
+//    public static String staticLibSuffix = ".la";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+
+  /* libamadec_system.so.so config */
+    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
     public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
     public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-    public static String toolChain = "clang";
-    public static String target = "libamadec_system.so";
-    public static String cProjectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/audio/libamadec_system.so/.project";
+    public static String toolChain = "bin/clang";
+    public static String target = "libfdkaac_sys.so";
+    public static String cProjectFile = "/home/lishuai/workspaces/audio/libfdkaac_sys.so/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/audio/libfdkaac_sys.so/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
     public static String staticLibSuffix = ".a";
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
-
-//  /* libam_adp_adec.so config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "libfaad_sys.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/libfaad_sys.so/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
 
 //  /* am_av_test config */
 //    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
@@ -405,7 +405,7 @@ public class CompileFlagParser {
                         k++;
                         continue;
                     } else if (str.startsWith("-include")) {
-                        cxxIncludeHFileFlags.addLast(ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
+                        cxxIncludeHFileFlags.addLast(ajustDir(str.substring(8, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                         continue;
                     }
 
@@ -450,7 +450,7 @@ public class CompileFlagParser {
                         k++;
                         continue;
                     } else if (str.startsWith("-isystem")) {
-                        cxxOtherFlags.addLast("-isystem " + " " + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
+                        cxxOtherFlags.addLast("-isystem " + " " + ajustDir(str.substring(8, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                         continue;
                     }
 
