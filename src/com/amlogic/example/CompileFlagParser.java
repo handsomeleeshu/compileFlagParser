@@ -29,13 +29,13 @@ public class CompileFlagParser {
 //    public static String excutableSuffix = "";
 
   /* libamadec_system.so.so config */
-    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/hardware/amlogic/LibAudio/build.log";
-    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-    public static String toolChain = "bin/clang";
-    public static String target = "libfdkaac_sys.so";
-    public static String cProjectFile = "/home/lishuai/workspaces/audio/libfdkaac_sys.so/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/audio/libfdkaac_sys.so/.project";
+    public static String logFile = "/home/lishuai/work/code/ffmpeg/ffmpeg/build.log";
+    public static String rootDir = "/home/lishuai/work/code/ffmpeg/ffmpeg";
+    public static String rootDirMacro = "FFMPEG_SRC_ROOT";
+    public static String toolChain = "arm-linux-androideabi-";
+    public static String target = "ffmpeg_g";
+    public static String cProjectFile = "/home/lishuai/workspaces/ffmpeg/ffmpeg_g/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/ffmpeg/ffmpeg_g/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
@@ -136,36 +136,70 @@ public class CompileFlagParser {
                 str = m.replaceAll(" ");
                 buildLog.addLast(str);
             }
-
             LinkedList<String> stringList = grep(buildLog, target);
             stringList = grep(stringList, toolChain);
-            stringList = grep(stringList, " -o ");
 
-            if (stringList.isEmpty()) {
-                reader.close();
-                System.out.println("not found " + target + " linking flags !!!");
-                return;
-            } else {
-                boolean linkedFlagFound = false;
-                for (int i = 0; i < stringList.size(); i++) {
-                    linkedFlags = splitCmd(stringList.get(i));
+            if (target.endsWith(staticLibSuffix)) {
+                if (stringList.isEmpty()) {
+                    reader.close();
+                    System.out.println("not found " + target + " linking flags !!!");
+                    return;
+                } else {
+                    boolean linkedFlagFound = false;
+                    for (int i = 0; i < stringList.size(); i++) {
+                        linkedFlags = splitCmd(stringList.get(i));
 
-                    for (int j = 0; j < linkedFlags.length; j++) {
-                        if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].replace("\"", "").replace("'", "").endsWith(target)) {
-                            linkedFlagFound = true;
+                        for (int j = 0; j < linkedFlags.length; j++) {
+                            if (linkedFlags[j].replace("\"", "").replace("'", "").endsWith(objSuffix)) {
+                                linkedFlagFound = true;
+                            }
+                            if (linkedFlags[j].replace("\"", "").replace("'", "").endsWith(staticLibSuffix) &&
+                                    !linkedFlags[j].replace("\"", "").replace("'", "").endsWith(target)) {
+                                linkedFlagFound = false;
+                                break;
+                            }
+                        }
+
+                        if (linkedFlagFound) {
                             break;
                         }
                     }
 
-                    if (linkedFlagFound) {
-                        break;
+                    if (!linkedFlagFound) {
+                        reader.close();
+                        System.out.println("not found " + target + " linking flags !!!");
+                        return;
                     }
                 }
+            } else {
+                stringList = grep(stringList, " -o ");
 
-                if (!linkedFlagFound) {
+                if (stringList.isEmpty()) {
                     reader.close();
                     System.out.println("not found " + target + " linking flags !!!");
                     return;
+                } else {
+                    boolean linkedFlagFound = false;
+                    for (int i = 0; i < stringList.size(); i++) {
+                        linkedFlags = splitCmd(stringList.get(i));
+
+                        for (int j = 0; j < linkedFlags.length; j++) {
+                            if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].replace("\"", "").replace("'", "").endsWith(target)) {
+                                linkedFlagFound = true;
+                                break;
+                            }
+                        }
+
+                        if (linkedFlagFound) {
+                            break;
+                        }
+                    }
+
+                    if (!linkedFlagFound) {
+                        reader.close();
+                        System.out.println("not found " + target + " linking flags !!!");
+                        return;
+                    }
                 }
             }
 
@@ -260,7 +294,7 @@ public class CompileFlagParser {
                     i++;
                     continue;
                 } else if (str.startsWith("-L")) {
-                    otherLinkedFlags.addLast("-L " + ajustDir(str.substring(2, str.length() - 1).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
+                    otherLinkedFlags.addLast("-L " + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                     continue;
                 }
 
@@ -325,6 +359,18 @@ public class CompileFlagParser {
                     continue;
                 } else if (str.startsWith("-Wl,-rpath-link=")) {
                     otherLinkedFlags.addLast("-Wl,-rpath-link=" + ajustDir(str.substring(16, str.length()), pwdDir, rootDir, rootDirectoryMacro));
+                    continue;
+                }
+
+                if (str.endsWith(target)) {
+                    continue;
+                }
+
+                if (str.equals("rcD") ||
+                        str.equals("rc") ||
+                        str.equals("-rc") ||
+                        str.equals("-r")) {
+                    i++;
                     continue;
                 }
 
@@ -1260,7 +1306,24 @@ public class CompileFlagParser {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                        "\" valueType=\"string\"/>\n");
+                        "\" valueType=\"string\"/>\n" +
+                                "                               <option id=\"gnu.cpp.link.option.debugging.gprof.341724871\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.link.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
+                                "                               <option defaultValue=\"false\" id=\"gnu.cpp.link.option.shared.1065527157\" superClass=\"gnu.cpp.link.option.shared\" valueType=\"boolean\"/>\n" +
+                                "                               <inputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.input.338375993\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.input\">\n" +
+                                "                                   <additionalInput kind=\"additionalinputdependency\" paths=\"$(USER_OBJS)\"/>\n" +
+                                "                                   <additionalInput kind=\"additionalinput\" paths=\"$(LIBS)\"/>\n" +
+                                "                               </inputType>\n" +
+                                "                               <outputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.output.343839160\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.output\"/>\n" +
+                                "                           </tool>\n" +
+                                "                           <tool command=\"ar\" commandLinePattern=\"${COMMAND} ${FLAGS} ${INPUTS}\" errorParsers=\"\" id=\"cdt.managedbuild.tool.gnu.cross.archiver.654163789\" name=\"Cross GCC Archiver\" superClass=\"cdt.managedbuild.tool.gnu.cross.archiver\">\n" +
+                                "                               <option id=\"gnu.both.lib.option.flags.832188549\" name=\"Archiver flags\" superClass=\"gnu.both.lib.option.flags\" value=\"-rc " + this.target + " ");
+                for (int i = 0; i < flags.size(); i++) {
+                    writer.write(flags.get(i) + " ");
+                }
+                writer.write(
+                                "\" valueType=\"string\"/>\n" +
+                                "                               <outputType id=\"cdt.managedbuild.tool.gnu.archiver.output.1890400257\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.archiver.output\"/>\n" +
+                                "                           </tool>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1270,17 +1333,6 @@ public class CompileFlagParser {
         private void generateTail() {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.link.option.debugging.gprof.341724871\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.link.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
-                                "								<option defaultValue=\"false\" id=\"gnu.cpp.link.option.shared.1065527157\" superClass=\"gnu.cpp.link.option.shared\" valueType=\"boolean\"/>\n" +
-                                "								<inputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.input.338375993\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.input\">\n" +
-                                "									<additionalInput kind=\"additionalinputdependency\" paths=\"$(USER_OBJS)\"/>\n" +
-                                "									<additionalInput kind=\"additionalinput\" paths=\"$(LIBS)\"/>\n" +
-                                "								</inputType>\n" +
-                                "								<outputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.output.343839160\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.output\"/>\n" +
-                                "							</tool>\n" +
-                                "							<tool id=\"cdt.managedbuild.tool.gnu.cross.archiver.654163789\" name=\"Cross GCC Archiver\" superClass=\"cdt.managedbuild.tool.gnu.cross.archiver\">\n" +
-                                "								<outputType id=\"cdt.managedbuild.tool.gnu.archiver.output.1890400257\" outputPrefix=\"\" superClass=\"cdt.managedbuild.tool.gnu.archiver.output\"/>\n" +
-                                "							</tool>\n" +
                                 "							<tool command=\"" + asCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GASErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.assembler.1127778392\" name=\"Cross GCC Assembler\" superClass=\"cdt.managedbuild.tool.gnu.cross.assembler\">\n" +
                                 "								<option id=\"gnu.both.asm.option.include.paths.2101698361\" name=\"Include paths (-I)\" superClass=\"gnu.both.asm.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\"/>\n" +
                                 "								<option id=\"gnu.both.asm.option.flags.1652156105\" name=\"Assembler flags\" superClass=\"gnu.both.asm.option.flags\" useByScannerDiscovery=\"false\" value=\"\" valueType=\"string\"/>\n" +
