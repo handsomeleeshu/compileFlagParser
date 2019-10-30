@@ -28,14 +28,13 @@ public class CompileFlagParser {
 //    public static String sharedLibSuffix = ".so";
 //    public static String excutableSuffix = "";
 
-  /* libamadec_system.so.so config */
-    public static String logFile = "/home/lishuai/work/code/ffmpeg/ffmpeg/build.log";
-    public static String rootDir = "/home/lishuai/work/code/ffmpeg/ffmpeg";
-    public static String rootDirMacro = "FFMPEG_SRC_ROOT";
-    public static String toolChain = "arm-linux-androideabi-";
-    public static String target = "ffmpeg_g";
-    public static String cProjectFile = "/home/lishuai/workspaces/ffmpeg/ffmpeg_g/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/ffmpeg/ffmpeg_g/.project";
+    public static String logFile = "/home/lishuai/work/amlogic/FreeRtos/freertos/build.log";
+    public static String rootDir = "/home/lishuai/work/amlogic/FreeRtos/freertos/lib/third_party/amlogic";
+    public static String rootDirMacro = "FREERTOS_SRC_ROOT";
+    public static String toolChain = "aarch64-none-elf-";
+    public static String target = "libdrivers.a";
+    public static String cProjectFile = "/home/lishuai/workspaces/FreeRtos/libdrivers/.cproject";
+    public static String projectFile = "/home/lishuai/workspaces/FreeRtos/libdrivers/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
@@ -367,6 +366,7 @@ public class CompileFlagParser {
                 }
 
                 if (str.equals("rcD") ||
+                        str.equals("rcSTPD") ||
                         str.equals("rc") ||
                         str.equals("-rc") ||
                         str.equals("-r")) {
@@ -708,6 +708,11 @@ public class CompileFlagParser {
         pwdDir = removeHeadTailSpaces(pwdDir.replace("\"", "").replace("'", ""));
         rootDir = removeHeadTailSpaces(rootDir.replace("\"", "").replace("'", ""));
         srcDir = getFileFullPathName(srcDir, pwdDir);
+
+        while (!srcDir.contains(rootDir)) {
+            rootDir = rootDir.substring(0, rootDir.lastIndexOf("/"));
+            rootDirMacro += "/..";
+        }
 
         return rootDirMacro + srcDir.replaceFirst(rootDir, "");
     }
