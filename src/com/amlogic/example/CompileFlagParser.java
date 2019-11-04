@@ -1074,7 +1074,7 @@ public class CompileFlagParser {
             }
             try {
                 writer.write(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                                 "<?fileVersion 4.0.0?><cproject storage_type_id=\"org.eclipse.cdt.core.XmlProjectDescriptionStorage\">\n" +
                                 "	<storageModule moduleId=\"org.eclipse.cdt.core.settings\">\n" +
                                 "		<cconfiguration id=\"cdt.managedbuild.config.gnu.cross.exe.debug.1648944120\">\n" +
@@ -1082,11 +1082,11 @@ public class CompileFlagParser {
                                 "				<externalSettings>\n" +
                                 "					<externalSetting>\n");
                 writer.write(
-                        "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"includePath\" name=\"/" + targetName + "\"/>\n" +
+                                "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"includePath\" name=\"/" + targetName + "\"/>\n" +
                                 "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"libraryPath\" name=\"/" + targetName + "/Debug\"/>\n" +
                                 "						<entry flags=\"RESOLVED\" kind=\"libraryFile\" name=\"" + targetName + "\" srcPrefixMapping=\"\" srcRootPath=\"\"/>\n");
                 writer.write(
-                        "					</externalSetting>\n" +
+                                "					</externalSetting>\n" +
                                 "				</externalSettings>\n" +
                                 "				<extensions>\n" +
                                 "					<extension id=\"org.eclipse.cdt.core.ELF\" point=\"org.eclipse.cdt.core.BinaryParser\"/>\n" +
@@ -1122,13 +1122,13 @@ public class CompileFlagParser {
         private void generateCIncludeFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.c.compiler.option.include.paths.1677072826\" name=\"Include paths (-I)\" superClass=\"gnu.c.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
+                                "								<option id=\"gnu.c.compiler.option.include.paths.1677072826\" name=\"Include paths (-I)\" superClass=\"gnu.c.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n");
+                                "								</option>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1138,13 +1138,13 @@ public class CompileFlagParser {
         private void generateCDefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.c.compiler.option.preprocessor.def.symbols.159527443\" name=\"Defined symbols (-D)\" superClass=\"gnu.c.compiler.option.preprocessor.def.symbols\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
+                                "								<option id=\"gnu.c.compiler.option.preprocessor.def.symbols.159527443\" name=\"Defined symbols (-D)\" superClass=\"gnu.c.compiler.option.preprocessor.def.symbols\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.misc.pic.1443281071\" name=\"Position Independent Code (-fPIC)\" superClass=\"gnu.c.compiler.option.misc.pic\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1155,12 +1155,12 @@ public class CompileFlagParser {
         private void generateCOtherFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.c.compiler.option.misc.other.1565630258\" name=\"Other flags\" superClass=\"gnu.c.compiler.option.misc.other\" useByScannerDiscovery=\"false\" value=\"");
+                                "								<option id=\"gnu.c.compiler.option.misc.other.1565630258\" name=\"Other flags\" superClass=\"gnu.c.compiler.option.misc.other\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                        "\" valueType=\"string\"/>\n");
+                                "\" valueType=\"string\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1170,13 +1170,13 @@ public class CompileFlagParser {
         private void generateCIncludeFileFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.c.compiler.option.include.files.282279272\" name=\"Include files (-include)\" superClass=\"gnu.c.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
+                                "								<option id=\"gnu.c.compiler.option.include.files.282279272\" name=\"Include files (-include)\" superClass=\"gnu.c.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.preprocessor.nostdinc.1452453262\" name=\"Do not search system directories (-nostdinc)\" superClass=\"gnu.c.compiler.option.preprocessor.nostdinc\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<option id=\"gnu.c.compiler.option.debugging.gprof.486374969\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.c.compiler.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
@@ -1188,13 +1188,13 @@ public class CompileFlagParser {
         private void generateCUndefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.c.compiler.option.preprocessor.undef.symbol.281459856\" name=\"Undefined symbols (-U)\" superClass=\"gnu.c.compiler.option.preprocessor.undef.symbol\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
+                                "								<option id=\"gnu.c.compiler.option.preprocessor.undef.symbol.281459856\" name=\"Undefined symbols (-U)\" superClass=\"gnu.c.compiler.option.preprocessor.undef.symbol\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.dialect.flags.429697936\" name=\"Other dialect flags\" superClass=\"gnu.c.compiler.option.dialect.flags\" useByScannerDiscovery=\"true\" value=\"\" valueType=\"string\"/>\n" +
                                 "								<option id=\"gnu.c.compiler.option.warnings.allwarn.966035331\" superClass=\"gnu.c.compiler.option.warnings.allwarn\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<inputType id=\"cdt.managedbuild.tool.gnu.c.compiler.input.2027022934\" superClass=\"cdt.managedbuild.tool.gnu.c.compiler.input\"/>\n" +
@@ -1208,16 +1208,16 @@ public class CompileFlagParser {
         private void generateCppDefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "							<tool command=\"" + cppCompileCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GCCErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler.1531969055\" name=\"Cross G++ Compiler\" superClass=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler\">\n" +
+                                "							<tool command=\"" + cppCompileCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GCCErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler.1531969055\" name=\"Cross G++ Compiler\" superClass=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler\">\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.optimization.level.404914194\" name=\"Optimization Level\" superClass=\"gnu.cpp.compiler.option.optimization.level\" useByScannerDiscovery=\"false\" value=\"gnu.cpp.compiler.optimization.level.none\" valueType=\"enumerated\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.debugging.level.957528395\" name=\"Debug Level\" superClass=\"gnu.cpp.compiler.option.debugging.level\" useByScannerDiscovery=\"false\" value=\"gnu.cpp.compiler.debugging.level.max\" valueType=\"enumerated\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.preprocessor.def.1057535825\" name=\"Defined symbols (-D)\" superClass=\"gnu.cpp.compiler.option.preprocessor.def\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.dialect.std.611462728\" name=\"Language standard\" superClass=\"gnu.cpp.compiler.option.dialect.std\" useByScannerDiscovery=\"true\" value=\"gnu.cpp.compiler.dialect.default\" valueType=\"enumerated\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1228,12 +1228,12 @@ public class CompileFlagParser {
         private void generateCppOtherFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.compiler.option.other.other.1767830441\" name=\"Other flags\" superClass=\"gnu.cpp.compiler.option.other.other\" useByScannerDiscovery=\"false\" value=\"");
+                                "								<option id=\"gnu.cpp.compiler.option.other.other.1767830441\" name=\"Other flags\" superClass=\"gnu.cpp.compiler.option.other.other\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                        "\" valueType=\"string\"/>\n" +
+                                "\" valueType=\"string\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.other.pic.65604555\" name=\"Position Independent Code (-fPIC)\" superClass=\"gnu.cpp.compiler.option.other.pic\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1244,13 +1244,13 @@ public class CompileFlagParser {
         private void generateCppIncludeFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.compiler.option.include.paths.73418692\" name=\"Include paths (-I)\" superClass=\"gnu.cpp.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
+                                "								<option id=\"gnu.cpp.compiler.option.include.paths.73418692\" name=\"Include paths (-I)\" superClass=\"gnu.cpp.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n");
+                                "								</option>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1260,13 +1260,13 @@ public class CompileFlagParser {
         private void generateCppIncludeFileFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.compiler.option.include.files.1018725910\" name=\"Include files (-include)\" superClass=\"gnu.cpp.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
+                                "								<option id=\"gnu.cpp.compiler.option.include.files.1018725910\" name=\"Include files (-include)\" superClass=\"gnu.cpp.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.preprocessor.nostdinc.846830269\" name=\"Do not search system directories (-nostdinc)\" superClass=\"gnu.cpp.compiler.option.preprocessor.nostdinc\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.debugging.gprof.1289434470\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.compiler.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
@@ -1278,13 +1278,13 @@ public class CompileFlagParser {
         private void generateCppUndefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.compiler.option.preprocessor.undef.958428965\" name=\"Undefined symbols (-U)\" superClass=\"gnu.cpp.compiler.option.preprocessor.undef\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
+                                "								<option id=\"gnu.cpp.compiler.option.preprocessor.undef.958428965\" name=\"Undefined symbols (-U)\" superClass=\"gnu.cpp.compiler.option.preprocessor.undef\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                        "								</option>\n" +
+                                "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.warnings.allwarn.1882802321\" superClass=\"gnu.cpp.compiler.option.warnings.allwarn\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<inputType id=\"cdt.managedbuild.tool.gnu.cpp.compiler.input.1035246757\" superClass=\"cdt.managedbuild.tool.gnu.cpp.compiler.input\"/>\n" +
                                 "							</tool>\n" +
@@ -1306,12 +1306,12 @@ public class CompileFlagParser {
         private void generateLinkerFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                        "								<option id=\"gnu.cpp.link.option.flags.1587373543\" name=\"Linker flags\" superClass=\"gnu.cpp.link.option.flags\" useByScannerDiscovery=\"false\" value=\"");
+                                "								<option id=\"gnu.cpp.link.option.flags.1587373543\" name=\"Linker flags\" superClass=\"gnu.cpp.link.option.flags\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                        "\" valueType=\"string\"/>\n" +
+                                "\" valueType=\"string\"/>\n" +
                                 "                               <option id=\"gnu.cpp.link.option.debugging.gprof.341724871\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.link.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "                               <option defaultValue=\"false\" id=\"gnu.cpp.link.option.shared.1065527157\" superClass=\"gnu.cpp.link.option.shared\" valueType=\"boolean\"/>\n" +
                                 "                               <inputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.input.338375993\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.input\">\n" +
