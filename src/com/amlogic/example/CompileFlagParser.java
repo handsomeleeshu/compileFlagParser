@@ -19,8 +19,8 @@ public class CompileFlagParser {
 //    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
 //    public static String toolChain = "arm-linux-androideabi-g";
 //    public static String target = "libam_adp_adec.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/libam_adp_adec.so/.project";
+//    public static String cProjectFile = "/home/lishuai/workspaces/android/libam_adp_adec.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/android/libam_adp_adec.so/.project";
 //    public static String cSourceFileSuffix = ".c";
 //    public static String cppSourceFileSuffix = ".cpp";
 //    public static String objSuffix = ".lo";
@@ -28,28 +28,88 @@ public class CompileFlagParser {
 //    public static String sharedLibSuffix = ".so";
 //    public static String excutableSuffix = "";
 
-    public static String logFile = "/home/lishuai/work/amlogic/FreeRtos/freertos/build.log";
-    public static String rootDir = "/home/lishuai/work/amlogic/FreeRtos/freertos/lib/third_party/amlogic";
-    public static String rootDirMacro = "FREERTOS_SRC_ROOT";
-    public static String toolChain = "aarch64-none-elf-";
-    public static String target = "libdrivers.a";
-    public static String cProjectFile = "/home/lishuai/workspaces/FreeRtos/libdrivers/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/FreeRtos/libdrivers/.project";
-    public static String cSourceFileSuffix = ".c";
-    public static String cppSourceFileSuffix = ".cpp";
-    public static String objSuffix = ".o";
-    public static String staticLibSuffix = ".a";
-    public static String sharedLibSuffix = ".so";
-    public static String excutableSuffix = "";
+//    public static String logFile = "/home/lishuai/work/amlogic/FreeRtos/freertos/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/FreeRtos/freertos/lib/third_party/amlogic/audio/samples";
+//    public static String rootDirMacro = "ASAMPLES_SRC_ROOT";
+//    public static String toolChain = "aarch64-none-elf-";
+//    public static String target = "libasamples.a";
+//    public static String cProjectFile = "/home/lishuai/workspaces/FreeRtos/libasamples/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/FreeRtos/libasamples/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
 
-//  /* am_av_test config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/test/am_av_test/build.log";
+//    /* am_av_test config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
 //    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
 //    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
 //    public static String toolChain = "bin/clang";
 //    public static String target = "am_av_test";
-//    public static String cProjectFile = "/home/lishuai/workspaces/audio/am_av_test/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/audio/am_av_test/.project";
+//    public static String cProjectFile = "/home/lishuai/workspaces/android/am_av_test/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/android/am_av_test/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+
+//    /* libamavutils_sys.so config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "libamavutils_sys.so";
+//    public static String cProjectFile = "/home/lishuai/workspaces/android/libamavutils_sys.so/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/android/libamavutils_sys.so/.project";
+//    public static String cSourceFileSuffix = ".c";
+//    public static String cppSourceFileSuffix = ".cpp";
+//    public static String objSuffix = ".o";
+//    public static String staticLibSuffix = ".a";
+//    public static String sharedLibSuffix = ".so";
+//    public static String excutableSuffix = "";
+
+  /* libFraunhoferAAC.a config */
+  public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/frameworks/av/media/libstagefright/codecs/aacdec/build.log";
+  public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+  public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+  public static String toolChain = "bin/clang";
+  public static String target = "libFraunhoferAAC.a";
+  public static String cProjectFile = "/home/lishuai/workspaces/android/libFraunhoferAAC.a/.cproject";
+  public static String projectFile = "/home/lishuai/workspaces/android/libFraunhoferAAC.a/.project";
+  public static String cSourceFileSuffix = ".c";
+  public static String cppSourceFileSuffix = ".cpp";
+  public static String objSuffix = ".o";
+  public static String staticLibSuffix = ".a";
+  public static String sharedLibSuffix = ".so";
+  public static String excutableSuffix = "";
+
+//  /* libmad_sys.so config */
+//  public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/frameworks/av/media/libstagefright/build.log";
+//  public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//  public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//  public static String toolChain = "bin/clang";
+//  public static String target = "libstagefright_soft_aacdec.so";
+//  public static String cProjectFile = "/home/lishuai/workspaces/android/libstagefright_soft_aacdec.so/.cproject";
+//  public static String projectFile = "/home/lishuai/workspaces/android/libstagefright_soft_aacdec.so/.project";
+//  public static String cSourceFileSuffix = ".c";
+//  public static String cppSourceFileSuffix = ".cpp";
+//  public static String objSuffix = ".o";
+//  public static String staticLibSuffix = ".a";
+//  public static String sharedLibSuffix = ".so";
+//  public static String excutableSuffix = "";
+
+//    /* am_av_test_2 config */
+//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
+//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
+//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
+//    public static String toolChain = "bin/clang";
+//    public static String target = "am_av_test";
+//    public static String cProjectFile = "/home/lishuai/workspaces/android/am_av_test_2/.cproject";
+//    public static String projectFile = "/home/lishuai/workspaces/android/am_av_test_2/.project";
 //    public static String cSourceFileSuffix = ".c";
 //    public static String cppSourceFileSuffix = ".cpp";
 //    public static String objSuffix = ".o";
@@ -78,8 +138,8 @@ public class CompileFlagParser {
 //    public static String rootDirMacro = "OPUS_SRC_ROOT";
 //    public static String toolChain = "arm-linux-androideabi-g";
 //    public static String target = "libopus.la";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libopus/.project";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/android/libopus/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/android/libopus/.project";
 //    public static String cSourceFileSuffix = ".c";
 //    public static String cppSourceFileSuffix = ".cpp";
 //    public static String objSuffix = ".lo";
@@ -93,8 +153,8 @@ public class CompileFlagParser {
 //    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
 //    public static String toolChain = "arm-linux-androideabi-g";
 //    public static String target = "libfdk-aac.la";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/libaac/.project";
+//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/android/libaac/.cproject";
+//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/android/libaac/.project";
 //    public static String cSourceFileSuffix = ".c";
 //    public static String cppSourceFileSuffix = ".cpp";
 //    public static String objSuffix = ".lo";
@@ -367,6 +427,7 @@ public class CompileFlagParser {
 
                 if (str.equals("rcD") ||
                         str.equals("rcSTPD") ||
+                        str.equals("crsD") ||
                         str.equals("rc") ||
                         str.equals("-rc") ||
                         str.equals("-r")) {
@@ -839,7 +900,7 @@ public class CompileFlagParser {
         private void generateHead(String targetName) {
             try {
                 writer.write(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                 "<projectDescription>\n" +
                                 "	<name>" + targetName + "</name>\n" +
                                 "	<comment></comment>\n" +
@@ -885,29 +946,29 @@ public class CompileFlagParser {
             }
             try {
                 writer.write(
-                        "	<linkedResources>\n" +
+                                "	<linkedResources>\n" +
                                 "");
 
                 for (int i = 0; i < folders.size(); i++) {
                     writer.write(
-                            "		<link>\n" +
-                                    "			<name>" + folders.get(i) + "</name>\n" +
-                                    "			<type>2</type>\n" +
-                                    "			<locationURI>virtual:/virtual</locationURI>\n" +
-                                    "		</link>\n" +
-                                    "");
+                                "		<link>\n" +
+                                "			<name>" + folders.get(i) + "</name>\n" +
+                                "			<type>2</type>\n" +
+                                "			<locationURI>virtual:/virtual</locationURI>\n" +
+                                "		</link>\n" +
+                                "");
                 }
                 for (int i = 0; i < srcFiles.size(); i++) {
                     writer.write(
-                            "		<link>\n" +
-                                    "			<name>" + srcFiles.get(i) + "</name>\n" +
-                                    "			<type>1</type>\n" +
-                                    "			<locationURI>" + rootDirMacro + "/" + srcFiles.get(i) + "</locationURI>\n" +
-                                    "		</link>\n" +
-                                    "");
-                }
+                                "		<link>\n" +
+                                "			<name>" + srcFiles.get(i) + "</name>\n" +
+                                "			<type>1</type>\n" +
+                                "			<locationURI>" + rootDirMacro + "/" + srcFiles.get(i) + "</locationURI>\n" +
+                                "		</link>\n" +
+                                "");
+            }
                 writer.write(
-                        "	</linkedResources>\n" +
+                                "	</linkedResources>\n" +
                                 "");
 
             } catch (IOException e) {
@@ -919,7 +980,7 @@ public class CompileFlagParser {
         private void generateTail(String rootDir, String rootDirMacro) {
             try {
                 writer.write(
-                        "	<variableList>\n" +
+                                "	<variableList>\n" +
                                 "		<variable>\n" +
                                 "			<name>" + rootDirMacro + "</name>\n" +
                                 "			<value>file:" + rootDir + "</value>\n" +
