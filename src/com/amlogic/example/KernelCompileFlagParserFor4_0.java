@@ -9,192 +9,30 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CompileFlagParser {
+public class KernelCompileFlagParserFor4_0 {
 
     /* global configs */
 
-//    /* libam_adp_adec.so config */
-//    public static String logFile = "/home/lishuai/work/temp/build_fdkaac.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/fdkaac/fdk-aac-2.0.0";
-//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
-//    public static String toolChain = "arm-linux-androideabi-g";
-//    public static String target = "libam_adp_adec.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/android/libam_adp_adec.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/android/libam_adp_adec.so/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".lo";
-//    public static String staticLibSuffix = ".la";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    public static String logFile = "/home/lishuai/work/amlogic/FreeRtos/freertos/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/FreeRtos/freertos/lib/third_party/amlogic/audio/samples";
-//    public static String rootDirMacro = "ASAMPLES_SRC_ROOT";
-//    public static String toolChain = "aarch64-none-elf-";
-//    public static String target = "libasamples.a";
-//    public static String cProjectFile = "/home/lishuai/workspaces/FreeRtos/libasamples/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/FreeRtos/libasamples/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* am_av_test config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "am_av_test";
-//    public static String cProjectFile = "/home/lishuai/workspaces/android/am_av_test/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/android/am_av_test/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* libamavutils_sys.so config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "libamavutils_sys.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/android/libamavutils_sys.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/android/libamavutils_sys.so/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* libhalaudio.so config */
-//    public static String logFile = "/home/lishuai/work/amlogic/buildroot/aml_halaudio_build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/buildroot/output/mesonaxg_s400_sbr_32_release/build/aml_halaudio-0.0.1/audio_hal";
-//    public static String rootDirMacro = "AUDIO_HAL_SRC_ROOT";
-//    public static String toolChain = "arm-linux-gnueabihf-g";
-//    public static String target = "libhalaudio.so";
-//    public static String cProjectFile = "/home/lishuai/workspaces/soundbar_buildroot/libhalaudio.so/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/soundbar_buildroot/libhalaudio.so/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* test config */
-//    public static String logFile = "/home/lishuai/work/amlogic/soundbar/aml_halaudio_build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/soundbar/output/mesonaxg_s400_sbr_32_release/build/aml_halaudio-0.0.1/test";
-//    public static String rootDirMacro = "AUDIO_HAL_TEST_SRC_ROOT";
-//    public static String toolChain = "arm-linux-gnueabihf-g";
-//    public static String target = "test";
-//    public static String cProjectFile = "/home/lishuai/workspaces/soundbar_buildroot/test/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/soundbar_buildroot/test/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-    /* libdolby_atmos.so config */
-    public static String logFile = "/home/lishuai/work/amlogic/dolby_atmos/Dolby-ATMOS-system-level-intergration-1.7/src/DolbyAtmosForHomeAudio/Source_Code/datmos_ht/make/libdolby_atomos/linuxhf_cortex_a9_vfp_neon_gnu/build.log";
-    public static String rootDir = "/home/lishuai/work/amlogic/dolby_atmos";
-    public static String rootDirMacro = "DOLBY_ATMOS_SRC_ROOT";
-    public static String toolChain = "arm-linux-gnueabihf-";
-    public static String target = "libdolby_atmos_1_7.so";
-    public static String cProjectFile = "/home/lishuai/workspaces/soundbar_buildroot/libdolby_atmos_1_7.so/.cproject";
-    public static String projectFile = "/home/lishuai/workspaces/soundbar_buildroot/libdolby_atmos_1_7.so/.project";
+  /* libamadec_system.so.so config */
+    public static String logFile = "/home/shuaili2/work/code/runninglinuxkernel_4.0/build_64bit.log";
+    public static String rootDir = "/home/shuaili2/work/code/runninglinuxkernel_4.0";
+    public static String rootDirMacro = "KERNEL_SRC_ROOT";
+    public static String toolChain = "aarch64-linux-gnu-";
+    public static String target = "vmlinux.a";
+    public static String cProjectFile = "/home/shuaili2/workspace/linux_kernel_4.0_64bit/kernel/.cproject";
+    public static String projectFile = "/home/shuaili2/workspace/linux_kernel_4.0_64bit/kernel/.project";
     public static String cSourceFileSuffix = ".c";
     public static String cppSourceFileSuffix = ".cpp";
     public static String objSuffix = ".o";
-    public static String staticLibSuffix = ".a";
+    public static String staticLibSuffix = ".o";
     public static String sharedLibSuffix = ".so";
     public static String excutableSuffix = "";
 
-//    /* libFraunhoferAAC.a config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/frameworks/av/media/libstagefright/codecs/aacdec/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "libFraunhoferAAC.a";
-//    public static String cProjectFile = "/home/lishuai/workspaces/android/libFraunhoferAAC.a/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/android/libFraunhoferAAC.a/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* am_av_test_2 config */
-//    public static String logFile = "/home/lishuai/work/amlogic/androidp-tv-dev/vendor/amlogic/common/external/dvb/build.log";
-//    public static String rootDir = "/home/lishuai/work/amlogic/androidp-tv-dev";
-//    public static String rootDirMacro = "ANDROID_P_SRC_ROOT";
-//    public static String toolChain = "bin/clang";
-//    public static String target = "am_av_test";
-//    public static String cProjectFile = "/home/lishuai/workspaces/android/am_av_test_2/.cproject";
-//    public static String projectFile = "/home/lishuai/workspaces/android/am_av_test_2/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".a";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* test opus decode config */
-//    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
-//    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
-//    public static String rootDirMacro = "OPUS_SRC_ROOT";
-//    public static String toolChain = "arm-linux-androideabi-g";
-//    public static String target = "test_opus_decode";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/audio/test_opus_decode/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".o";
-//    public static String staticLibSuffix = ".la";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* lib opus config */
-//    public static String logFile = "/Users/lishuai/work/temp/build_opus.log";
-//    public static String rootDir = "/Users/lishuai/work/code/opus-1.3.1";
-//    public static String rootDirMacro = "OPUS_SRC_ROOT";
-//    public static String toolChain = "arm-linux-androideabi-g";
-//    public static String target = "libopus.la";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/android/libopus/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/android/libopus/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".lo";
-//    public static String staticLibSuffix = ".la";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
-//    /* fdkaac config */
-//    public static String logFile = "/Users/lishuai/work/temp/build_aac.log";
-//    public static String rootDir = "/Users/lishuai/work/code/fdk-aac-2.0.0";
-//    public static String rootDirMacro = "FDKAAC_SRC_ROOT";
-//    public static String toolChain = "arm-linux-androideabi-g";
-//    public static String target = "libfdk-aac.la";
-//    public static String cProjectFile = "/Users/lishuai/work/eclipse_ws/android/libaac/.cproject";
-//    public static String projectFile = "/Users/lishuai/work/eclipse_ws/android/libaac/.project";
-//    public static String cSourceFileSuffix = ".c";
-//    public static String cppSourceFileSuffix = ".cpp";
-//    public static String objSuffix = ".lo";
-//    public static String staticLibSuffix = ".la";
-//    public static String sharedLibSuffix = ".so";
-//    public static String excutableSuffix = "";
-
     public static void main(String[] args) {
         String str = null, pwdDir = null;
+        String linkedFlag = toolChain + "ar -rc " + target + " ";
         String[] linkedFlags = null;
+        LinkedList<String> stringList = null;
         BufferedReader reader = null;
         rootDir = getFileFullPathName(rootDir, null);
 
@@ -223,74 +61,19 @@ public class CompileFlagParser {
                 Pattern p = Pattern.compile("\t");
                 Matcher m = p.matcher(str);
                 str = m.replaceAll(" ");
-                buildLog.addLast(str);
-            }
-            LinkedList<String> stringList = grep(buildLog, target);
-            stringList = grep(stringList, toolChain);
-
-            if (target.endsWith(staticLibSuffix)) {
-                if (stringList.isEmpty()) {
-                    reader.close();
-                    System.out.println("not found " + target + " linking flags !!!");
-                    return;
-                } else {
-                    boolean linkedFlagFound = false;
-                    for (int i = 0; i < stringList.size(); i++) {
-                        linkedFlags = splitCmd(stringList.get(i));
-
-                        for (int j = 0; j < linkedFlags.length; j++) {
-                            if (linkedFlags[j].replace("\"", "").replace("'", "").endsWith(objSuffix)) {
-                                linkedFlagFound = true;
-                            }
-                            if (linkedFlags[j].replace("\"", "").replace("'", "").endsWith(staticLibSuffix) &&
-                                    !linkedFlags[j].replace("\"", "").replace("'", "").endsWith(target)) {
-                                linkedFlagFound = false;
-                                break;
-                            }
-                        }
-
-                        if (linkedFlagFound) {
+                if (str.contains(toolChain) && str.contains(" -c ") && str.contains(" -o ")) {
+                    String[] cmds = splitCmd(str);
+                    for (int i = 0; i < cmds.length - 1; i++) {
+                        if (cmds[i].equals("-o") && cmds[i + 1].endsWith(objSuffix)) {
+                            linkedFlag += " " + cmds[i + 1];
+                            buildLog.addLast(str);
                             break;
                         }
                     }
-
-                    if (!linkedFlagFound) {
-                        reader.close();
-                        System.out.println("not found " + target + " linking flags !!!");
-                        return;
-                    }
-                }
-            } else {
-                stringList = grep(stringList, " -o ");
-
-                if (stringList.isEmpty()) {
-                    reader.close();
-                    System.out.println("not found " + target + " linking flags !!!");
-                    return;
-                } else {
-                    boolean linkedFlagFound = false;
-                    for (int i = 0; i < stringList.size(); i++) {
-                        linkedFlags = splitCmd(stringList.get(i));
-
-                        for (int j = 0; j < linkedFlags.length; j++) {
-                            if (linkedFlags[j].equals("-o") && linkedFlags[j + 1].replace("\"", "").replace("'", "").endsWith(target)) {
-                                linkedFlagFound = true;
-                                break;
-                            }
-                        }
-
-                        if (linkedFlagFound) {
-                            break;
-                        }
-                    }
-
-                    if (!linkedFlagFound) {
-                        reader.close();
-                        System.out.println("not found " + target + " linking flags !!!");
-                        return;
-                    }
                 }
             }
+
+            linkedFlags = splitCmd(linkedFlag);
 
             if (!grep(linkedFlags, "pwd=").isEmpty()) {
                 pwdDir = grep(linkedFlags, "pwd=").get(0).replaceFirst("pwd=", "");
@@ -457,7 +240,7 @@ public class CompileFlagParser {
 
                 if (str.equals("rcD") ||
                         str.equals("rcSTPD") ||
-                        str.equals("crsD") ||
+                        str.equals("rcsTPD") ||
                         str.equals("rc") ||
                         str.equals("-rc") ||
                         str.equals("-r")) {
@@ -500,7 +283,7 @@ public class CompileFlagParser {
                     cxxIncludeFlags = includeCppFlags;
                     cxxIncludeHFileFlags = includeHFileCppFlags;
                 } else {
-                    System.out.println("not found " + srcList.get(i) + "in build log !!!");
+                    System.out.println("not found " + srcList.get(i) + " in build log !!!");
                     continue;
                 }
 
@@ -543,6 +326,14 @@ public class CompileFlagParser {
                         continue;
                     } else if (str.startsWith("-include")) {
                         cxxIncludeHFileFlags.addLast(ajustDir(str.substring(8, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
+                        continue;
+                    }
+
+                    if (str.startsWith("-DKBUILD") || str.startsWith("-D\"KBUILD")) {
+                        continue;
+                    }
+
+                    if (str.startsWith("-Wp,-MD")) {
                         continue;
                     }
 
@@ -597,15 +388,6 @@ public class CompileFlagParser {
                         continue;
                     } else if (str.startsWith("-B")) {
                         cxxOtherFlags.addLast("-B" + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
-                        continue;
-                    }
-
-                    if (str.equals("-L")) {
-                        cxxOtherFlags.addLast(str + ajustDir(cxxCompileFlags[k + 1].replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
-                        k++;
-                        continue;
-                    } else if (str.startsWith("-L")) {
-                        cxxOtherFlags.addLast("-L" + ajustDir(str.substring(2, str.length()).replace("\"", "").replace("'", ""), pwdDir, rootDir, rootDirectoryMacro));
                         continue;
                     }
 
@@ -713,7 +495,7 @@ public class CompileFlagParser {
         System.out.println(otherCppFlags);
         System.out.println("");
 
-        CProjectFileGenerator cProjctFile = new CProjectFileGenerator(CompileFlagParser.cProjectFile);
+        CProjectFileGenerator cProjctFile = new CProjectFileGenerator(KernelCompileFlagParserFor4_0.cProjectFile);
         cProjctFile.setTarget(target);
         cProjctFile.setCIncludeFlags(includeCFlags);
         cProjctFile.setCDefineFlags(defineCFlags);
@@ -731,7 +513,7 @@ public class CompileFlagParser {
         cProjctFile.setLinkerTool(linkerTool);
         cProjctFile.generate();
 
-        ProjectFileGenerator projectFile = new ProjectFileGenerator(CompileFlagParser.projectFile);
+        ProjectFileGenerator projectFile = new ProjectFileGenerator(KernelCompileFlagParserFor4_0.projectFile);
         projectFile.setRootDir(rootDir);
         projectFile.setRootDirMacro(rootDirMacro);
         projectFile.setTarget(target);
@@ -808,11 +590,6 @@ public class CompileFlagParser {
         pwdDir = removeHeadTailSpaces(pwdDir.replace("\"", "").replace("'", ""));
         rootDir = removeHeadTailSpaces(rootDir.replace("\"", "").replace("'", ""));
         srcDir = getFileFullPathName(srcDir, pwdDir);
-
-        while (!srcDir.contains(rootDir)) {
-            rootDir = rootDir.substring(0, rootDir.lastIndexOf("/"));
-            rootDirMacro += "/..";
-        }
 
         return rootDirMacro + srcDir.replaceFirst(rootDir, "");
     }
@@ -939,7 +716,7 @@ public class CompileFlagParser {
         private void generateHead(String targetName) {
             try {
                 writer.write(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                 "<projectDescription>\n" +
                                 "	<name>" + targetName + "</name>\n" +
                                 "	<comment></comment>\n" +
@@ -985,29 +762,29 @@ public class CompileFlagParser {
             }
             try {
                 writer.write(
-                                "	<linkedResources>\n" +
+                        "	<linkedResources>\n" +
                                 "");
 
                 for (int i = 0; i < folders.size(); i++) {
                     writer.write(
-                                "		<link>\n" +
-                                "			<name>" + folders.get(i) + "</name>\n" +
-                                "			<type>2</type>\n" +
-                                "			<locationURI>virtual:/virtual</locationURI>\n" +
-                                "		</link>\n" +
-                                "");
+                            "		<link>\n" +
+                                    "			<name>" + folders.get(i) + "</name>\n" +
+                                    "			<type>2</type>\n" +
+                                    "			<locationURI>virtual:/virtual</locationURI>\n" +
+                                    "		</link>\n" +
+                                    "");
                 }
                 for (int i = 0; i < srcFiles.size(); i++) {
                     writer.write(
-                                "		<link>\n" +
-                                "			<name>" + srcFiles.get(i) + "</name>\n" +
-                                "			<type>1</type>\n" +
-                                "			<locationURI>" + rootDirMacro + "/" + srcFiles.get(i) + "</locationURI>\n" +
-                                "		</link>\n" +
-                                "");
-            }
+                            "		<link>\n" +
+                                    "			<name>" + srcFiles.get(i) + "</name>\n" +
+                                    "			<type>1</type>\n" +
+                                    "			<locationURI>" + rootDirMacro + "/" + srcFiles.get(i) + "</locationURI>\n" +
+                                    "		</link>\n" +
+                                    "");
+                }
                 writer.write(
-                                "	</linkedResources>\n" +
+                        "	</linkedResources>\n" +
                                 "");
 
             } catch (IOException e) {
@@ -1019,7 +796,7 @@ public class CompileFlagParser {
         private void generateTail(String rootDir, String rootDirMacro) {
             try {
                 writer.write(
-                                "	<variableList>\n" +
+                        "	<variableList>\n" +
                                 "		<variable>\n" +
                                 "			<name>" + rootDirMacro + "</name>\n" +
                                 "			<value>file:" + rootDir + "</value>\n" +
@@ -1174,7 +951,7 @@ public class CompileFlagParser {
             }
             try {
                 writer.write(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                                 "<?fileVersion 4.0.0?><cproject storage_type_id=\"org.eclipse.cdt.core.XmlProjectDescriptionStorage\">\n" +
                                 "	<storageModule moduleId=\"org.eclipse.cdt.core.settings\">\n" +
                                 "		<cconfiguration id=\"cdt.managedbuild.config.gnu.cross.exe.debug.1648944120\">\n" +
@@ -1182,11 +959,11 @@ public class CompileFlagParser {
                                 "				<externalSettings>\n" +
                                 "					<externalSetting>\n");
                 writer.write(
-                                "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"includePath\" name=\"/" + targetName + "\"/>\n" +
+                        "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"includePath\" name=\"/" + targetName + "\"/>\n" +
                                 "						<entry flags=\"VALUE_WORKSPACE_PATH\" kind=\"libraryPath\" name=\"/" + targetName + "/Debug\"/>\n" +
                                 "						<entry flags=\"RESOLVED\" kind=\"libraryFile\" name=\"" + targetName + "\" srcPrefixMapping=\"\" srcRootPath=\"\"/>\n");
                 writer.write(
-                                "					</externalSetting>\n" +
+                        "					</externalSetting>\n" +
                                 "				</externalSettings>\n" +
                                 "				<extensions>\n" +
                                 "					<extension id=\"org.eclipse.cdt.core.ELF\" point=\"org.eclipse.cdt.core.BinaryParser\"/>\n" +
@@ -1222,13 +999,13 @@ public class CompileFlagParser {
         private void generateCIncludeFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.c.compiler.option.include.paths.1677072826\" name=\"Include paths (-I)\" superClass=\"gnu.c.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
+                        "								<option id=\"gnu.c.compiler.option.include.paths.1677072826\" name=\"Include paths (-I)\" superClass=\"gnu.c.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n");
+                        "								</option>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1238,13 +1015,13 @@ public class CompileFlagParser {
         private void generateCDefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.c.compiler.option.preprocessor.def.symbols.159527443\" name=\"Defined symbols (-D)\" superClass=\"gnu.c.compiler.option.preprocessor.def.symbols\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
+                        "								<option id=\"gnu.c.compiler.option.preprocessor.def.symbols.159527443\" name=\"Defined symbols (-D)\" superClass=\"gnu.c.compiler.option.preprocessor.def.symbols\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.misc.pic.1443281071\" name=\"Position Independent Code (-fPIC)\" superClass=\"gnu.c.compiler.option.misc.pic\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1255,12 +1032,12 @@ public class CompileFlagParser {
         private void generateCOtherFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.c.compiler.option.misc.other.1565630258\" name=\"Other flags\" superClass=\"gnu.c.compiler.option.misc.other\" useByScannerDiscovery=\"false\" value=\"");
+                        "								<option id=\"gnu.c.compiler.option.misc.other.1565630258\" name=\"Other flags\" superClass=\"gnu.c.compiler.option.misc.other\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                                "\" valueType=\"string\"/>\n");
+                        "\" valueType=\"string\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1270,13 +1047,13 @@ public class CompileFlagParser {
         private void generateCIncludeFileFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.c.compiler.option.include.files.282279272\" name=\"Include files (-include)\" superClass=\"gnu.c.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
+                        "								<option id=\"gnu.c.compiler.option.include.files.282279272\" name=\"Include files (-include)\" superClass=\"gnu.c.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.preprocessor.nostdinc.1452453262\" name=\"Do not search system directories (-nostdinc)\" superClass=\"gnu.c.compiler.option.preprocessor.nostdinc\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<option id=\"gnu.c.compiler.option.debugging.gprof.486374969\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.c.compiler.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
@@ -1288,13 +1065,13 @@ public class CompileFlagParser {
         private void generateCUndefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.c.compiler.option.preprocessor.undef.symbol.281459856\" name=\"Undefined symbols (-U)\" superClass=\"gnu.c.compiler.option.preprocessor.undef.symbol\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
+                        "								<option id=\"gnu.c.compiler.option.preprocessor.undef.symbol.281459856\" name=\"Undefined symbols (-U)\" superClass=\"gnu.c.compiler.option.preprocessor.undef.symbol\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.c.compiler.option.dialect.flags.429697936\" name=\"Other dialect flags\" superClass=\"gnu.c.compiler.option.dialect.flags\" useByScannerDiscovery=\"true\" value=\"\" valueType=\"string\"/>\n" +
                                 "								<option id=\"gnu.c.compiler.option.warnings.allwarn.966035331\" superClass=\"gnu.c.compiler.option.warnings.allwarn\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<inputType id=\"cdt.managedbuild.tool.gnu.c.compiler.input.2027022934\" superClass=\"cdt.managedbuild.tool.gnu.c.compiler.input\"/>\n" +
@@ -1308,16 +1085,16 @@ public class CompileFlagParser {
         private void generateCppDefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "							<tool command=\"" + cppCompileCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GCCErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler.1531969055\" name=\"Cross G++ Compiler\" superClass=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler\">\n" +
+                        "							<tool command=\"" + cppCompileCmd + "\" commandLinePattern=\"${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}\" errorParsers=\"org.eclipse.cdt.core.GCCErrorParser\" id=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler.1531969055\" name=\"Cross G++ Compiler\" superClass=\"cdt.managedbuild.tool.gnu.cross.cpp.compiler\">\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.optimization.level.404914194\" name=\"Optimization Level\" superClass=\"gnu.cpp.compiler.option.optimization.level\" useByScannerDiscovery=\"false\" value=\"gnu.cpp.compiler.optimization.level.none\" valueType=\"enumerated\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.debugging.level.957528395\" name=\"Debug Level\" superClass=\"gnu.cpp.compiler.option.debugging.level\" useByScannerDiscovery=\"false\" value=\"gnu.cpp.compiler.debugging.level.max\" valueType=\"enumerated\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.preprocessor.def.1057535825\" name=\"Defined symbols (-D)\" superClass=\"gnu.cpp.compiler.option.preprocessor.def\" useByScannerDiscovery=\"false\" valueType=\"definedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.dialect.std.611462728\" name=\"Language standard\" superClass=\"gnu.cpp.compiler.option.dialect.std\" useByScannerDiscovery=\"true\" value=\"gnu.cpp.compiler.dialect.default\" valueType=\"enumerated\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1328,12 +1105,12 @@ public class CompileFlagParser {
         private void generateCppOtherFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.cpp.compiler.option.other.other.1767830441\" name=\"Other flags\" superClass=\"gnu.cpp.compiler.option.other.other\" useByScannerDiscovery=\"false\" value=\"");
+                        "								<option id=\"gnu.cpp.compiler.option.other.other.1767830441\" name=\"Other flags\" superClass=\"gnu.cpp.compiler.option.other.other\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                                "\" valueType=\"string\"/>\n" +
+                        "\" valueType=\"string\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.other.pic.65604555\" name=\"Position Independent Code (-fPIC)\" superClass=\"gnu.cpp.compiler.option.other.pic\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -1344,13 +1121,13 @@ public class CompileFlagParser {
         private void generateCppIncludeFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.cpp.compiler.option.include.paths.73418692\" name=\"Include paths (-I)\" superClass=\"gnu.cpp.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
+                        "								<option id=\"gnu.cpp.compiler.option.include.paths.73418692\" name=\"Include paths (-I)\" superClass=\"gnu.cpp.compiler.option.include.paths\" useByScannerDiscovery=\"false\" valueType=\"includePath\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n");
+                        "								</option>\n");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1360,13 +1137,13 @@ public class CompileFlagParser {
         private void generateCppIncludeFileFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.cpp.compiler.option.include.files.1018725910\" name=\"Include files (-include)\" superClass=\"gnu.cpp.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
+                        "								<option id=\"gnu.cpp.compiler.option.include.files.1018725910\" name=\"Include files (-include)\" superClass=\"gnu.cpp.compiler.option.include.files\" useByScannerDiscovery=\"false\" valueType=\"includeFiles\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.preprocessor.nostdinc.846830269\" name=\"Do not search system directories (-nostdinc)\" superClass=\"gnu.cpp.compiler.option.preprocessor.nostdinc\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.debugging.gprof.1289434470\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.compiler.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n");
             } catch (IOException e) {
@@ -1378,13 +1155,13 @@ public class CompileFlagParser {
         private void generateCppUndefineFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.cpp.compiler.option.preprocessor.undef.958428965\" name=\"Undefined symbols (-U)\" superClass=\"gnu.cpp.compiler.option.preprocessor.undef\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
+                        "								<option id=\"gnu.cpp.compiler.option.preprocessor.undef.958428965\" name=\"Undefined symbols (-U)\" superClass=\"gnu.cpp.compiler.option.preprocessor.undef\" useByScannerDiscovery=\"false\" valueType=\"undefDefinedSymbols\">\n");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(
-                                "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
+                            "									<listOptionValue builtIn=\"false\" value=\"" + flags.get(i) + "\"/>\n");
                 }
                 writer.write(
-                                "								</option>\n" +
+                        "								</option>\n" +
                                 "								<option id=\"gnu.cpp.compiler.option.warnings.allwarn.1882802321\" superClass=\"gnu.cpp.compiler.option.warnings.allwarn\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "								<inputType id=\"cdt.managedbuild.tool.gnu.cpp.compiler.input.1035246757\" superClass=\"cdt.managedbuild.tool.gnu.cpp.compiler.input\"/>\n" +
                                 "							</tool>\n" +
@@ -1406,12 +1183,12 @@ public class CompileFlagParser {
         private void generateLinkerFlags(LinkedList<String> flags) {
             try {
                 writer.write(
-                                "								<option id=\"gnu.cpp.link.option.flags.1587373543\" name=\"Linker flags\" superClass=\"gnu.cpp.link.option.flags\" useByScannerDiscovery=\"false\" value=\"");
+                        "								<option id=\"gnu.cpp.link.option.flags.1587373543\" name=\"Linker flags\" superClass=\"gnu.cpp.link.option.flags\" useByScannerDiscovery=\"false\" value=\"");
                 for (int i = 0; i < flags.size(); i++) {
                     writer.write(flags.get(i) + " ");
                 }
                 writer.write(
-                                "\" valueType=\"string\"/>\n" +
+                        "\" valueType=\"string\"/>\n" +
                                 "                               <option id=\"gnu.cpp.link.option.debugging.gprof.341724871\" name=\"Generate gprof information (-pg)\" superClass=\"gnu.cpp.link.option.debugging.gprof\" useByScannerDiscovery=\"false\" value=\"false\" valueType=\"boolean\"/>\n" +
                                 "                               <option defaultValue=\"false\" id=\"gnu.cpp.link.option.shared.1065527157\" superClass=\"gnu.cpp.link.option.shared\" valueType=\"boolean\"/>\n" +
                                 "                               <inputType id=\"cdt.managedbuild.tool.gnu.cpp.linker.input.338375993\" superClass=\"cdt.managedbuild.tool.gnu.cpp.linker.input\">\n" +
